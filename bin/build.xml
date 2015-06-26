@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="project" name="junit">
+    <property name="run.classpath" value="bin"></property>
+    <property name="run.srcpath" value="src"></property>
+    <property name="run.srcpath" value="src"></property>
+    <property name="test.report" value="report"></property>
+    <property name="lib.dir" value="lib"></property>
+    
+    <path id="compile.path">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+    
+    <target name="compile">
+        <javac destdir="${run.classpath}" srcdir="${run.srcpath}" classpathref="compile.path" />
+        <javac destdir="${run.classpath}" srcdir="${test.srcpath}" classpathref="compile.path" />
+    </target>
+    <target name="junit" depends="compile">
+        <tstamp />
+        <mkdir dir="${test.report}" />
+        <mkdir dir="${test.report}/framework-${DSTAMP}-${TSTAMP}"/>
+        <junit printsummary="true">
+            <classpath>
+                <pathelement path="${run.classpath}" />
+                <fileset dir="${lib.dir}">
+            		<include name="**/*.jar"/>
+        		</fileset>
+            </classpath>
+            <formatter type="plain" />
+            <batchtest fork="yes" todir="${test.report}/framework-${DSTAMP}-${TSTAMP}">
+                <fileset dir="${test.srcpath}">
+                    <include name="**/*Test.java" />
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+</project>
